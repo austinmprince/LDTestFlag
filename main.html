@@ -1,0 +1,63 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sol Engineer Test</title>
+    <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
+    <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <!-- <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script> -->
+  </head>
+  <body>
+    <style>
+      body {margin: 10px;}
+    </style>
+    <script>
+      var user = {
+        firstName: 'Austin',
+        lastName: 'Prince',
+        key: 'amorrisprince@gmail.com',
+        custom: {
+          groups: 'beta_testers'
+        }
+
+      };
+      var user2 = {
+        firstName: 'Zela',
+        lastName: 'Taino',
+
+        key: 'idk@idk.com',
+        custom: {
+          groups: 'normie'
+        }
+      };
+      var div = document.createElement('div');
+      document.body.appendChild(div);
+
+      div.appendChild(document.createTextNode('Initializing...'));
+
+      var ldclient = LDClient.initialize('5cf6f10079c9c007574fb999', user);
+
+      function render() {
+        var shouldShow = ldclient.variation('test-flag', false);
+        var button = document.createElement('button');
+        console.log(shouldShow);
+        if (shouldShow){
+          button.setAttribute('class', 'mui-btn mui-btn--danger');
+          button.innerHTML = 'Showing';
+          console.log('Showing');
+        }
+        else {
+          button.setAttribute('class', 'mui-btn mui-btn--primary');
+          button.innerHTML = 'Not Showing';
+          console.log('Not Showing');
+        }
+        div.replaceChild(button, div.firstChild);
+
+
+        // div.replaceChild(document.createTextNode(label), div.firstChild);
+      }
+
+      ldclient.on('ready', render);
+      ldclient.on('change', render);
+    </script>
+  </body>
+</html>
